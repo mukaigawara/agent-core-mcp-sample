@@ -1,0 +1,14 @@
+services:
+  backend:
+    build: ./backend
+    ports:
+      - "3005:3000"
+    volumes:
+      - ./backend:/app
+      - bundle_cache:/usr/local/bundle
+    environment:
+      - RAILS_ENV=development
+    command: bin/rails server -b 0.0.0.0
+
+volumes:
+  bundle_cache:
