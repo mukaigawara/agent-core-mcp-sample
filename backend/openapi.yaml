@@ -1,0 +1,225 @@
+openapi: 3.0.3
+info:
+  title: Dog Service API
+  description: 犬にまつわるサンプルAPIサービス。犬種、登録犬、散歩記録を管理します。
+  version: 1.0.0
+
+servers:
+  - url: https://your-app-runner-url.amazonaws.com
+    description: Production
+
+paths:
+  /api/breeds:
+    get:
+      operationId: listBreeds
+      summary: 犬種一覧を取得
+      description: 登録されている犬種の一覧を返します。犬種名、原産国、サイズカテゴリ、説明を含みます。
+      tags:
+        - Breeds
+      responses:
+        '200':
+          description: 犬種一覧
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Breed'
+
+  /api/breeds/{id}:
+    get:
+      operationId: getBreed
+      summary: 犬種の詳細を取得
+      description: 指定されたIDの犬種情報を返します。
+      tags:
+        - Breeds
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: 犬種ID
+      responses:
+        '200':
+          description: 犬種の詳細
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Breed'
+        '404':
+          description: 犬種が見つからない
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/dogs:
+    get:
+      operationId: listDogs
+      summary: 登録犬一覧を取得
+      description: 登録されている犬の一覧を返します。犬の名前、犬種ID、誕生日、体重、飼い主名を含みます。
+      tags:
+        - Dogs
+      responses:
+        '200':
+          description: 登録犬一覧
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Dog'
+
+  /api/dogs/{id}:
+    get:
+      operationId: getDog
+      summary: 犬の詳細を取得
+      description: 指定されたIDの犬の情報を返します。
+      tags:
+        - Dogs
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: 犬のID
+      responses:
+        '200':
+          description: 犬の詳細
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Dog'
+        '404':
+          description: 犬が見つからない
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/walking_logs:
+    get:
+      operationId: listWalkingLogs
+      summary: 散歩記録一覧を取得
+      description: 散歩記録の一覧を返します。散歩の開始・終了時刻、距離、メモを含みます。
+      tags:
+        - WalkingLogs
+      responses:
+        '200':
+          description: 散歩記録一覧
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/WalkingLog'
+
+  /api/walking_logs/{id}:
+    get:
+      operationId: getWalkingLog
+      summary: 散歩記録の詳細を取得
+      description: 指定されたIDの散歩記録を返します。
+      tags:
+        - WalkingLogs
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: 散歩記録ID
+      responses:
+        '200':
+          description: 散歩記録の詳細
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WalkingLog'
+        '404':
+          description: 散歩記録が見つからない
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+components:
+  schemas:
+    Breed:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: 柴犬
+        origin_country:
+          type: string
+          example: 日本
+        size_category:
+          type: string
+          enum: [small, medium, large]
+          example: medium
+        description:
+          type: string
+          example: 忠実で勇敢な日本原産の犬種。くるんと巻いた尻尾が特徴。
+
+    Dog:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: コタロウ
+        breed_id:
+          type: integer
+          description: 犬種ID（Breedのidに対応）
+          example: 1
+        birthday:
+          type: string
+          format: date
+          example: '2022-05-10'
+        weight_kg:
+          type: number
+          format: float
+          example: 9.5
+        owner_name:
+          type: string
+          example: 田中太郎
+
+    WalkingLog:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        dog_id:
+          type: integer
+          description: 犬ID（Dogのidに対応）
+          example: 1
+        started_at:
+          type: string
+          format: date-time
+          example: '2026-03-30T07:00:00+09:00'
+        finished_at:
+          type: string
+          format: date-time
+          example: '2026-03-30T07:45:00+09:00'
+        distance_km:
+          type: number
+          format: float
+          example: 2.3
+        note:
+          type: string
+          example: 公園で他の柴犬と遊んだ
+
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+          example: Not found
