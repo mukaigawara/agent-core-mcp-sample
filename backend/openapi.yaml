@@ -5,8 +5,8 @@ info:
   version: 1.0.0
 
 servers:
-  - url: http://18.183.107.237
-    description: Production (EC2)
+  - url: https://dhbyg1h4ugdi2.cloudfront.net
+    description: Production (EC2 via CloudFront)
 
 paths:
   /api/breeds:
