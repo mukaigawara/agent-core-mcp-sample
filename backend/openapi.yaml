@@ -5,8 +5,8 @@ info:
   version: 1.0.0
 
 servers:
-  - url: https://your-app-runner-url.amazonaws.com
-    description: Production
+  - url: http://18.183.107.237
+    description: Production (EC2)
 
 paths:
   /api/breeds:
