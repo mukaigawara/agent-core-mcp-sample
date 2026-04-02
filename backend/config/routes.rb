@@ -9,5 +9,6 @@ Rails.application.routes.draw do
     resources :breeds, only: %i[index show]
     resources :dogs, only: %i[index show]
     resources :walking_logs, only: %i[index show]
+    resources :parks, only: %i[index show]
   end
 end
