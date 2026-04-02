@@ -43,6 +43,6 @@ Gateway URL: `https://dogservicegateway-mm34gpiev7.gateway.bedrock-agentcore.ap-
 - [Backend API 仕様](backend/README.md)
 - [OpenAPI Spec](backend/openapi.yaml)
 
-## TODO
-
-- サンプルのfirebase認証まで追加
+### TODO
+- ~~サンプルのエンドポイント追加~~
+- サンプルのfirebase認証まで追加 jwt token
